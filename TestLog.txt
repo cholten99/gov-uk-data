@@ -1,5 +1,4 @@
-25/09/14 02:12 > Restarted
-25/09/14 02:12 > array(0) {
-}
-
-25/09/14 02:13 > Fish
+26/09/14 18:08 > Restarted
+26/09/14 18:10 > Number of pages processed : 1
+26/09/14 18:10 > Number of links processed : 0
+26/09/14 18:10 > Completed

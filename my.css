@@ -1,0 +1,79 @@
+#header {
+  font: 'Lato', serif;
+  font-size: 20px;
+}
+
+h2 { 
+  font-family: ‘Lato’, serif;
+  font-size: 25px;
+  font-weight: 400; 
+}
+
+form {
+  display: inline;
+}
+
+#page_title_search_results {
+  width: 50%;
+  float: left;
+}
+
+#link_text_search_results {
+  width: 50%;
+  margin-left: 50%;
+/* There is no extent to which I do not HATE CSS. The invisible border below actually fixes a random layout problem */
+  border: 1px solid white;
+}
+
+#outbound_link_count_area {
+  width: 50%;
+  float: left;
+}
+
+#inbound_link_count_area {
+  margin-left: 50%;
+  width: 50%;
+/* There is no extent to which I do not HATE CSS. The invisible border below actually fixes a random layout problem */
+  border: 1px solid white;
+}
+
+#mini_title {
+  font-family: ‘Lato’, serif;
+  font-size: 20px;
+  font-weight: 400;
+}
+
+#links_out {
+  width: 49%;
+  float: left;
+}
+
+#links_in {
+  margin-left: 50%;
+  height: 40%
+  width: 49%;
+/* There is no extent to which I do not HATE CSS. The invisible border below actually fixes a random layout problem */
+  border: 1px solid white;
+}
+
+#links_in_table {
+  height: 25%;
+  overflow-y: auto;
+}
+
+#links_out_table {
+  height: 25%;
+  overflow-y: auto;
+}
+
+#network {
+}
+
+table, th, td {
+    border: 0px solid black;
+    border-collapse: collapse;
+}
+
+th,td {
+    padding: 5px;
+}

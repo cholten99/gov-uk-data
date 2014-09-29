@@ -16,12 +16,23 @@ if ($mysqli->connect_errno) {
 
   <head>
     <title>GOV.UK Data</title>
+
+    <!-- jQuery -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+    <!-- Google fonts -->
     <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+
+    <!-- Vis DOT mapper -->
+    <script type="text/javascript" src="vis.js"></script>
+    <link href="vis.css" rel="stylesheet" type="text/css" />
+
+    <!-- My CSS -->
     <link href='my.css' rel='stylesheet' type='text/css'>
 
     <script>
     $(function() {
+      // Set select to match page being examined if it's in the list
       href = window.location.href;
       location_start = href.indexOf("=") + 1;
       location_url = href.slice(location_start, href.length);
@@ -33,6 +44,43 @@ if ($mysqli->connect_errno) {
       $("#jump_select").mouseup(function () {
         window.location.href = "index.php?location=" + $("#jump_select").val();
       });
+
+      // Draw the network
+      $.post("network.php", { url: location_url }, function(data, status) {
+        try {
+          var options = {
+            height:"400px",
+          };
+
+var nodes = [
+  {id: 1, label: 'Node 1'},
+  {id: 2, label: 'Node 2'},
+  {id: 3, label: 'Node 3'},
+  {id: 4, label: 'Node 4'},
+  {id: 5, label: 'Node 5'}
+];
+
+var edges = [
+  {from: 1, to: 2},
+  {from: 1, to: 3},
+  {from: 2, to: 4},
+  {from: 2, to: 5}
+];
+
+var data= {
+  nodes: nodes,
+  edges: edges,
+};
+
+          theCanvas = $("#map")[0];
+          network = new vis.Network(theCanvas, data, options);
+          network.redraw();
+        }
+        catch (err) {
+          console.log(err.toString());
+        }
+      });
+
     });
     </script>
 
@@ -98,9 +146,10 @@ if ($mysqli->connect_errno) {
       </div>
     </div>
     <hr/>
-    <div id="network">
+    <div id="map_area">
       <div id="mini_title">Network of pages</div>
-      Remember clustering if returned number of nodes is too big : http://goo.gl/nRF4MO
+      <div id="map"></div>
+      <hr/>
     </div>
   </body>
 </html>

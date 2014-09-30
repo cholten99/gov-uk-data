@@ -41,40 +41,27 @@ if ($mysqli->connect_errno) {
       }
       $("#jump_select option[value='" + location_url + "']").prop("selected", true);
 
-      $("#jump_select").mouseup(function () {
+      // Select listener
+      $("#jump_select").change(function () {
         window.location.href = "index.php?location=" + $("#jump_select").val();
       });
 
       // Draw the network
-      $.post("network.php", { url: location_url }, function(data, status) {
+      $.post("network.php", { url: location_url }, function(data_json, status) {
+        data = JSON.parse(data_json);
         try {
           var options = {
             height:"400px",
           };
-
-var nodes = [
-  {id: 1, label: 'Node 1'},
-  {id: 2, label: 'Node 2'},
-  {id: 3, label: 'Node 3'},
-  {id: 4, label: 'Node 4'},
-  {id: 5, label: 'Node 5'}
-];
-
-var edges = [
-  {from: 1, to: 2},
-  {from: 1, to: 3},
-  {from: 2, to: 4},
-  {from: 2, to: 5}
-];
-
-var data= {
-  nodes: nodes,
-  edges: edges,
-};
-
           theCanvas = $("#map")[0];
           network = new vis.Network(theCanvas, data, options);
           network.redraw();
+
+          // Network node listener
+          network.on('select', function(properties) {
+console.log('selected nodes: ' + properties.nodes);
+          });
+
         }
         catch (err) {
           console.log(err.toString());

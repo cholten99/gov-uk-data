@@ -27,7 +27,7 @@ $sql_string = "TRUNCATE TABLE links";
 $result = $mysqli->query($sql_string);
 
 // Handle root page
-$sql_string = "INSERT INTO urls (url,external,page_title,inbound_link_count,processed) VALUES ('http://gov.uk','0','','0','0')";
+$sql_string = "INSERT INTO urls (url,external,page_title,inbound_link_count,outbound_link_count,processed) VALUES ('http://gov.uk','0','','0','0','0')";
 $result = $mysqli->query($sql_string);
 $current_page_id = 1;
 $current_page_url = "http://gov.uk";
@@ -90,7 +90,7 @@ while (true) {
     $sql_string = "SELECT id,inbound_link_count FROM urls WHERE url='" . $link_url . "'";
     $result = $mysqli->query($sql_string);
     if ($result->num_rows == 0) {
-      $sql_string = "INSERT INTO urls (url,external,page_title,inbound_link_count,processed) VALUES ('" . $link_url . "','" . $external . "','','1','0')";
+      $sql_string = "INSERT INTO urls (url,external,page_title,inbound_link_count,outbound_link_count, processed) VALUES ('" . $link_url . "','" . $external . "','','1','0','0')";
       $result = $mysqli->query($sql_string);
       $target_page_id = $mysqli->insert_id;
     } else {

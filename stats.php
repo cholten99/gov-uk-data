@@ -61,7 +61,7 @@ if ($mysqli->connect_errno) {
           $result = $mysqli->query($sql_string);
           print "<table>";
           while($row = $result->fetch_assoc()) {
-            print "<tr><td><a href=\"index.php?location=" . $row['url'] . "\">" . $row['page_title'] . "</a></td><td>" . $row['outbound_link_count'] . "</td>";
+            print "<tr><td><a href=\"index.php?id=" . $row['id'] . "\">" . $row['page_title'] . "</a></td><td>" . $row['outbound_link_count'] . "</td>";
           }
           print "</table>";
         ?>
@@ -73,7 +73,7 @@ if ($mysqli->connect_errno) {
           $result = $mysqli->query($sql_string);
           print "<table>";
           while($row = $result->fetch_assoc()) {
-            print "<tr><td><a href=\"index.php?location=" . $row['url'] . "\">" . $row['page_title'] . "</a></td><td>" . $row['inbound_link_count'] . "</td>";
+            print "<tr><td><a href=\"index.php?id=" . $row['id'] . "\">" . $row['page_title'] . "</a></td><td>" . $row['inbound_link_count'] . "</td>";
           }
           print "</table>";
         ?>

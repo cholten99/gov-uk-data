@@ -12,6 +12,26 @@ $mysqli->select_db("gov_uk_data");
 if ($mysqli->connect_errno) {
   print "Failed to connect to MySQL: " . $mysqli->connect_error;
 }
+
+// Okay, this is a hack to handle the select
+$url = $_GET['url'];
+if ($url) {
+  $sql_string = "SELECT id FROM urls WHERE url='" . $url . "'";
+  $result = $mysqli->query($sql_string);
+  $row = $result->fetch_assoc();
+  header("Location: index.php?id=" . $row['id']);
+}
+
+// Get the ID and info of the target page
+$current_page_id = $_GET['id'];
+if ($current_page_id) {
+  $current_page_id = 1;
+}
+$sql_string = "SELECT * FROM urls WHERE id='" . $id . "'";
+$result = $mysqli->query($sql_string);
+$row = $result->fetch_assoc();
+$current_page_url = $row['url'];
+$current_page_title = $row['page_title'];
 ?>
 
   <head>
@@ -33,17 +53,12 @@ if ($mysqli->connect_errno) {
     <script>
     $(function() {
       // Set select to match page being examined if it's in the list
-      href = window.location.href;
-      location_start = href.indexOf("=") + 1;
-      location_url = href.slice(location_start, href.length);
-      if (location_url == "") {
-        location_url = "http://gov.uk";
-      }
+      location_url = <?php print $current_page_url; ?>;
       $("#jump_select option[value='" + location_url + "']").prop("selected", true);
 
       // Select listener
       $("#jump_select").change(function () {
-        window.location.href = "index.php?location=" + $("#jump_select").val();
+        window.location.href = "index.php?url=" + $("#jump_select").val();
       });
 
       // Draw the network
@@ -59,7 +74,7 @@ if ($mysqli->connect_errno) {
 
           // Network node listener
           network.on('select', function(properties) {
-console.log('selected nodes: ' + properties.nodes);
+            window.location.href("index.php?id=" + properties.nodes);
           });
 
         }
@@ -90,18 +105,14 @@ console.log('selected nodes: ' + properties.nodes);
     </div>
     <div id="tables">
       <?php
-        $location = $_GET['location'];
-        $sql_string = "SELECT * FROM urls WHERE url='" . $location . "'";
-        $result = $mysqli->query($sql_string);
-        $row = $result->fetch_assoc();
-        print "<div id=\"mini_title\">Page title : " . $row['page_title'] . "</div>";
+        print "<div id=\"mini_title\">Page title : " . $current_page_title . "</div>";
       ?>
       <hr/>
       <div id="links_out">
         <div id="mini_title">Outbound links</div>
         <div id="links_out_table">
           <?php
-            $links_sql_string = "SELECT DISTINCT * from links WHERE from_id='" . $row['id'] . "'";
+            $links_sql_string = "SELECT DISTINCT * from links WHERE from_id='" . $current_page_id . "'";
             $links_result = $mysqli->query($links_sql_string);
             print "<table>";
             while($links_row = $links_result->fetch_assoc()) {
@@ -118,7 +129,7 @@ console.log('selected nodes: ' + properties.nodes);
         <div id="mini_title">Inbound links</div>
         <div id="links_in_table">
           <?php
-            $links_sql_string = "SELECT DISTINCT * from links WHERE to_id='" . $row['id'] . "'";
+            $links_sql_string = "SELECT DISTINCT * from links WHERE to_id='" . $current_page_id . "'";
             $links_result = $mysqli->query($links_sql_string);
             print "<table>";
             while($links_row = $links_result->fetch_assoc()) {

@@ -66,9 +66,9 @@ if ($mysqli->connect_errno) {
           print "<table>";
           while($row = $result->fetch_assoc()) {
             if ($row['external'] == "1") {
-              print "<tr><td><a href=\"" . $row['url'] . "\">External page</a></td></tr>";
+              print "<tr><td><a href=\"" . $row['id'] . "\">External page</a></td></tr>";
             } else {
-              print "<tr><td><a href=\"index.php?location=" . $row['url'] . "\">" . $row['page_title'] . "</a></td></tr>";
+              print "<tr><td><a href=\"index.php?id=" . $row['id'] . "\">" . $row['page_title'] . "</a></td></tr>";
             }
           }
           print "</table>";
@@ -91,9 +91,9 @@ if ($mysqli->connect_errno) {
             $url_result = $mysqli->query($sql_string);
             $url_row = $url_result->fetch_assoc();
             if ($url_row['external'] == "1") {
-              print "<tr><td><a href=\"" . $url_row['url'] . "\">External link</a></td></tr>";
+              print "<tr><td><a href=\"" . $url_row['id'] . "\">External link</a></td></tr>";
             } else {
-              print "<tr><td><a href=\"index.php?location=" . $url_row['url'] . "\">" . $row['link_text'] . "</a></td></tr>";
+              print "<tr><td><a href=\"index.php?id=" . $url_row['id'] . "\">" . $row['link_text'] . "</a></td></tr>";
             }
           }
           print "</table";

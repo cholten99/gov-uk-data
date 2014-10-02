@@ -27,10 +27,10 @@ $sql_string = "TRUNCATE TABLE links";
 $result = $mysqli->query($sql_string);
 
 // Handle root page
-$sql_string = "INSERT INTO urls (url,external,page_title,inbound_link_count,outbound_link_count,processed) VALUES ('http://gov.uk','0','','0','0','0')";
+$sql_string = "INSERT INTO urls (url,external,page_title,inbound_link_count,outbound_link_count,processed) VALUES ('https://www.gov.uk','0','','0','0','0')";
 $result = $mysqli->query($sql_string);
 $current_page_id = 1;
-$current_page_url = "http://gov.uk";
+$current_page_url = "https://www.gov.uk";
 
 while (true) {
 
@@ -66,7 +66,7 @@ while (true) {
 
     $external = '0';
     if ($link_url[0] == "/") {
-      $link_url = "http://gov.uk" . $link_url;
+      $link_url = "https://www.gov.uk" . $link_url;
     } else {
       $external = '1';
     }

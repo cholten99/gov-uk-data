@@ -17,7 +17,7 @@ if ($mysqli->connect_errno) {
 }
 
 $data = "";
-$nodes = "{\"id\": 1, \"title\": \"GOV.UK\"},";
+$nodes = "{\"id\": 1, \"title\": \"GOV.UK\", \"border.color\": \"#97C2FC\"},";
 $edges = "";
 $sql_string = "SELECT * FROM links WHERE from_id='1' LIMIT 21";
 $result = $mysqli->query($sql_string);
@@ -25,8 +25,12 @@ while($row = $result->fetch_assoc()) {
   $url_sql_string = "SELECT * FROM urls WHERE id='" . $row['to_id'] . "'";
   $url_result = $mysqli->query($url_sql_string);
   $url_row = $url_result->fetch_assoc();
+  $node_colour = "#97C2FC";
+  if ($url_row['external'] == 1) {
+    $node_colour = "#FFA2A2";
+  }
 
-  $nodes .= "{\"id\": " . $url_row['id'] . ", \"title\": \"" . $url_row['page_title'] . "\"},";
+  $nodes .= "{\"id\": " . $url_row['id'] . ", \"title\": \"" . $url_row['page_title'] . "\", \"border.color\": \"" . $node_colour ."\"},";
   $edges .= "{\"from\": 1, \"to\": " . $row['to_id'] . ",\"title\": \"" . $row['link_text'] . "\"},";
 }
 $nodes = rtrim($nodes, ",");

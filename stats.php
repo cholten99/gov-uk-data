@@ -22,16 +22,9 @@ if ($mysqli->connect_errno) {
 
     <script>
     $(function() {
-      href = window.location.href;
-      location_start = href.indexOf("=") + 1;
-      location_url = href.slice(location_start, href.length);
-      if (location_url == "") {
-        location_url = "http://gov.uk";
-      }
-      $("#jump_select option[value='" + location_url + "']").prop("selected", true);
-
-      $("#jump_select").mouseup(function () {
-        window.location.href = "index.php?location=" + $("#jump_select").val();
+      // Select listener
+      $("#jump_select").change(function () {
+        window.location.assign("index.php?url=" + $("#jump_select").val());
       });
     });
     </script>
@@ -55,11 +48,10 @@ if ($mysqli->connect_errno) {
     </div>
     <div id="tables">
       <div id="outbound_link_count_area">
-        <h4>Highest number of links on page</h4>
         <?php
           $sql_string = "SELECT * FROM urls WHERE external <> '1' ORDER BY outbound_link_count DESC LIMIT 25";
           $result = $mysqli->query($sql_string);
-          print "<table>";
+          print "<table><tr><th>Highest outgoing links</th><th>Count</th<</tr>";
           while($row = $result->fetch_assoc()) {
             print "<tr><td><a href=\"index.php?id=" . $row['id'] . "\">" . $row['page_title'] . "</a></td><td>" . $row['outbound_link_count'] . "</td>";
           }
@@ -67,11 +59,10 @@ if ($mysqli->connect_errno) {
         ?>
       </div>
       <div id="inbound_link_count_area">
-        <h4>Highest number of links to page</h4>
         <?php
           $sql_string = "SELECT * FROM urls WHERE external <> '1' ORDER BY inbound_link_count DESC LIMIT 25";
           $result = $mysqli->query($sql_string);
-          print "<table>";
+          print "<table><tr><th>Highest incoming links</th><th>Count</th></tr>";
           while($row = $result->fetch_assoc()) {
             print "<tr><td><a href=\"index.php?id=" . $row['id'] . "\">" . $row['page_title'] . "</a></td><td>" . $row['inbound_link_count'] . "</td>";
           }

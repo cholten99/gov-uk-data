@@ -24,10 +24,10 @@ if ($url) {
 
 // Get the ID and info of the target page
 $current_page_id = $_GET['id'];
-if ($current_page_id) {
+if (!($current_page_id)) {
   $current_page_id = 1;
 }
-$sql_string = "SELECT * FROM urls WHERE id='" . $id . "'";
+$sql_string = "SELECT * FROM urls WHERE id='" . $current_page_id . "'";
 $result = $mysqli->query($sql_string);
 $row = $result->fetch_assoc();
 $current_page_url = $row['url'];
@@ -53,12 +53,12 @@ $current_page_title = $row['page_title'];
     <script>
     $(function() {
       // Set select to match page being examined if it's in the list
-      location_url = <?php print $current_page_url; ?>;
+      location_url = "<?php print $current_page_url; ?>";
       $("#jump_select option[value='" + location_url + "']").prop("selected", true);
 
       // Select listener
       $("#jump_select").change(function () {
-        window.location.href = "index.php?url=" + $("#jump_select").val();
+        window.location.assign("index.php?url=" + $("#jump_select").val());	
       });
 
       // Draw the network
@@ -73,8 +73,8 @@ $current_page_title = $row['page_title'];
           network.redraw();
 
           // Network node listener
-          network.on('select', function(properties) {
-            window.location.href("index.php?id=" + properties.nodes);
+          network.on('doubleClick', function(properties) {
+            window.location.assign("index.php?id=" + properties.nodes)
           });
 
         }
@@ -92,7 +92,7 @@ $current_page_title = $row['page_title'];
       <h2>GOV.UK Data : Main page</h2>
       Jump to :
       <select id="jump_select">
-        <option value="http://gov.uk">GOV.UK</option>
+        <option value="https://www.gov.uk">GOV.UK</option>
         <option value="https://www.gov.uk/browse/benefits">Benefits</option>
         <option value="https://www.gov.uk/browse/justice">Justice</option>
         <option value="https://www.gov.uk/browse/education">Education</option>
@@ -109,34 +109,32 @@ $current_page_title = $row['page_title'];
       ?>
       <hr/>
       <div id="links_out">
-        <div id="mini_title">Outbound links</div>
         <div id="links_out_table">
           <?php
             $links_sql_string = "SELECT DISTINCT * from links WHERE from_id='" . $current_page_id . "'";
             $links_result = $mysqli->query($links_sql_string);
-            print "<table>";
+            print "<table><tr><th>Outbound links</th></tr>";
             while($links_row = $links_result->fetch_assoc()) {
-              $outbound_sql_string = "SELECT url FROM urls WHERE id='" . $links_row['to_id'] . "'";
+              $outbound_sql_string = "SELECT * FROM urls WHERE id='" . $links_row['to_id'] . "'";
               $outbound_result = $mysqli->query($outbound_sql_string);
               $outbound_row = $outbound_result->fetch_assoc();
-              print "<tr><td><a href=\"index.php?location=" . $outbound_row['url'] . "\">" . $links_row['link_text'] . "</a></td><td>";
+              print "<tr><td><a href=\"index.php?id=" . $outbound_row['id'] . "\">" . $links_row['link_text'] . "</a></td><td>";
             }
             print "</table>";
           ?>
         </div>
       </div>
       <div id="links_in">
-        <div id="mini_title">Inbound links</div>
         <div id="links_in_table">
           <?php
             $links_sql_string = "SELECT DISTINCT * from links WHERE to_id='" . $current_page_id . "'";
             $links_result = $mysqli->query($links_sql_string);
-            print "<table>";
+            print "<table><tr><th>Inbound links</th></tr>";
             while($links_row = $links_result->fetch_assoc()) {
-              $inbound_sql_string = "SELECT url FROM urls WHERE id='" . $links_row['from_id'] . "'";
+              $inbound_sql_string = "SELECT * FROM urls WHERE id='" . $links_row['from_id'] . "'";
               $inbound_result = $mysqli->query($inbound_sql_string);
               $inbound_row = $inbound_result->fetch_assoc();
-              print "<tr><td><a href=\"index.php?location=" . $inbound_row['url'] . "\">" . $links_row['link_text'] . "</a></td><td>";
+              print "<tr><td><a href=\"index.php?id=" . $inbound_row['id'] . "\">" . $links_row['link_text'] . "</a></td><td>";
             }
             print "</table>";
           ?>

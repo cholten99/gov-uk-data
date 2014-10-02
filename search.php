@@ -22,16 +22,9 @@ if ($mysqli->connect_errno) {
 
     <script>
     $(function() {
-      href = window.location.href;
-      location_start = href.indexOf("=") + 1;
-      location_url = href.slice(location_start, href.length);
-      if (location_url == "") {
-        location_url = "http://gov.uk";
-      }
-      $("#jump_select option[value='" + location_url + "']").prop("selected", true);
-
-      $("#jump_select").mouseup(function () {
-        window.location.href = "index.php?location=" + $("#jump_select").val();
+      // Select listener
+      $("#jump_select").change(function () {
+        window.location.assign("index.php?url=" + $("#jump_select").val());
       });
     });
     </script>
@@ -55,7 +48,6 @@ if ($mysqli->connect_errno) {
     </div>
     <div id="tables">
       <div id="page_title_search_results">
-      <h4>Page title results</h4>
       <?php
         $search_term = $_GET['search_input'];
         $sql_string = "SELECT * FROM urls WHERE page_title LIKE '%" . $search_term . "%' ORDER BY inbound_link_count DESC LIMIT 25";
@@ -63,7 +55,7 @@ if ($mysqli->connect_errno) {
         if ($result->num_rows == 0) {
           print "No page titles found with that search term.";
         } else {
-          print "<table>";
+          print "<table><tr><th>Page titles</th></tr>";
           while($row = $result->fetch_assoc()) {
             if ($row['external'] == "1") {
               print "<tr><td><a href=\"" . $row['id'] . "\">External page</a></td></tr>";
@@ -76,7 +68,6 @@ if ($mysqli->connect_errno) {
       ?>
       </div>
       <div id="link_text_search_results">
-      <h4>Link text results</h4>
       <?php
         $search_term = $_GET['search_input'];
         $sql_string = "SELECT DISTINCT * FROM links WHERE link_text LIKE '%" . $search_term . "%' LIMIT 25";
@@ -84,16 +75,16 @@ if ($mysqli->connect_errno) {
         if ($result->num_rows == 0) {
           print "No link texts found with that search term.";
         } else {
-          print "<table>";
+          print "<table><tr><th>Page</th><th>Link text</th></tr>";
           while($row = $result->fetch_assoc()) {
             $url_id = $row['from_id'];
             $sql_string = "SELECT * FROM urls WHERE id='" . $url_id . "'";
             $url_result = $mysqli->query($sql_string);
             $url_row = $url_result->fetch_assoc();
             if ($url_row['external'] == "1") {
-              print "<tr><td><a href=\"" . $url_row['id'] . "\">External link</a></td></tr>";
+              print "<tr><td><a href=\"" . $url_row['url'] . "\">" . $url_row['page_title'] . "</a></td><td><a href=\"" . $url_row['id'] . "\">External link</a></td></tr>";
             } else {
-              print "<tr><td><a href=\"index.php?id=" . $url_row['id'] . "\">" . $row['link_text'] . "</a></td></tr>";
+              print "<tr><td><a href=\"index.php?id=" . $url_row['id'] . "\">" . $url_row['page_title'] . "</a></td><td><a href=\"index.php?id=" . $url_row['id'] . "\">" . $row['link_text'] . "</a></td></tr>";
             }
           }
           print "</table";

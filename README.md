@@ -2,17 +2,18 @@ GovUKData
 =========
 
 TODO:
-1) Provide an API (include use if IN %thing% where appropriate):
-1.1) Two times getById (include LIMIT)
-1.2) getPageByURL
-1.3) getPageByPageTitle 
-1.4) getLinkByLinkText
-2) Change code to work with APIs
-3) Handle links with ?s and #s
-4) Seriously check for bonkers data
-5) Different node colour for external urls (done, not tested)
-6) Re-center network and build multi layers
-7) Clustering : http://goo.gl/nRF4MO (plus vis.js docs if that's not that)
-8) Lots of testing
-9) Check what's in the log (remove un-necessary logging and deal with weird things being added)
-10) Make video and put link in the header!
+0) Get main page working again - e.g. network
+1) Fix spider
+2) Handle links with ?s and #s
+3) Different node colour for page_type: normal, external, anchor, parameter
+4) Re-center network and build multi layers
+5) Clustering : http://goo.gl/nRF4MO (plus vis.js docs if that's not that)
+6) Lots of testing
+7) Check what's in the log (remove un-necessary logging and deal with weird things being added)
+8) Make video and put link in the header!
+
+URLs:
+* http://wave.webaim.org/report#/www.gov.uk
+* http://jigsaw.w3.org/css-validator/
+* http://validator.w3.org/
+* http://uk3.php.net/strip_tags

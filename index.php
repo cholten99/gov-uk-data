@@ -99,7 +99,10 @@ $current_page_title = $row['page_title'];
         <option value="https://www.gov.uk/browse/environment-countryside">Environment</option>
         <option value="https://www.gov.uk/browse/visas-immigration">Visas</option>
       </select>
-      | <a href="stats.php">Statistics</a>
+      | <a href="stats.php">Link Statistics</a>
+      | <a href="text.php">Text analysis</a>
+      | <a href="api.php">API information</a>
+      | <a href="" target="_blank">Intro video</a>
       | Search : <form action="search.php" method="get"><input name="search_input" id="search_input"></form>
       <hr/>
     </div>

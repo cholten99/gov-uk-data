@@ -27,7 +27,7 @@ $sql_string = "TRUNCATE TABLE links";
 $result = $mysqli->query($sql_string);
 
 // Handle root page
-$sql_string = "INSERT INTO urls (url,external,page_title,inbound_link_count,outbound_link_count,processed) VALUES ('https://www.gov.uk','0','','0','0','0')";
+$sql_string = "INSERT INTO urls (url,page_type,page_title,inbound_link_count,outbound_link_count,processed) VALUES ('https://www.gov.uk','normal','','0','0','0')";
 $result = $mysqli->query($sql_string);
 $current_page_id = 1;
 $current_page_url = "https://www.gov.uk";
@@ -64,11 +64,11 @@ while (true) {
     $text_end_pos = strpos($current_page_html, "<", $text_start_pos);
     $link_url = substr($current_page_html, $link_start_pos, $link_end_pos - $link_start_pos);
 
-    $external = '0';
+    $page_type = 'normal';
     if ($link_url[0] == "/") {
       $link_url = "https://www.gov.uk" . $link_url;
     } else {
-      $external = '1';
+      $page_type = 'external';
     }
 
     $link_text = substr($current_page_html, $text_start_pos, $text_end_pos - $text_start_pos);
@@ -90,7 +90,7 @@ while (true) {
     $sql_string = "SELECT id,inbound_link_count FROM urls WHERE url='" . $link_url . "'";
     $result = $mysqli->query($sql_string);
     if ($result->num_rows == 0) {
-      $sql_string = "INSERT INTO urls (url,external,page_title,inbound_link_count,outbound_link_count, processed) VALUES ('" . $link_url . "','" . $external . "','','1','0','0')";
+      $sql_string = "INSERT INTO urls (url,page_type,page_title,inbound_link_count,outbound_link_count, processed) VALUES ('" . $link_url . "','" . $page_type . "','','1','0','0')";
       $result = $mysqli->query($sql_string);
       $target_page_id = $mysqli->insert_id;
     } else {
@@ -114,7 +114,7 @@ while (true) {
 
   // Get the first non-external URL in urls where last_run_id <> $current_run_id
   // If exsists set $current_page_url to it, else break
-  $sql_string = "SELECT id, url FROM urls WHERE processed <> '1' AND external <> '1' LIMIT 1";
+  $sql_string = "SELECT id, url FROM urls WHERE processed <> '1' AND page_type <> 'external' LIMIT 1";
   $result = $mysqli->query($sql_string);
   if ($result->num_rows == 0) {
     break;

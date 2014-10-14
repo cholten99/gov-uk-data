@@ -42,7 +42,10 @@ if ($mysqli->connect_errno) {
         <option value="https://www.gov.uk/browse/environment-countryside">Environment</option>
         <option value="https://www.gov.uk/browse/visas-immigration">Visas</option>
       </select>
-      | <a href="stats.php">Statistics</a>
+      | <a href="stats.php">Link Statistics</a>
+      | <a href="text.php">Text analysis</a>
+      | <a href="api.php">API information</a>
+      | <a href="" target="_blank">Intro video</a>
       | Search : <form action="search.php" method="get"><input name="search_input" id="search_input"></form>
       <hr/>
     </div>
@@ -57,7 +60,7 @@ if ($mysqli->connect_errno) {
         } else {
           print "<table><tr><th>Page titles</th></tr>";
           while($row = $result->fetch_assoc()) {
-            if ($row['external'] == "1") {
+            if ($row['page_type'] == "external") {
               print "<tr><td><a href=\"" . $row['id'] . "\">External page</a></td></tr>";
             } else {
               print "<tr><td><a href=\"index.php?id=" . $row['id'] . "\">" . $row['page_title'] . "</a></td></tr>";
@@ -81,7 +84,7 @@ if ($mysqli->connect_errno) {
             $sql_string = "SELECT * FROM urls WHERE id='" . $url_id . "'";
             $url_result = $mysqli->query($sql_string);
             $url_row = $url_result->fetch_assoc();
-            if ($url_row['external'] == "1") {
+            if ($url_row['page_type'] == "external") {
               print "<tr><td><a href=\"" . $url_row['url'] . "\">" . $url_row['page_title'] . "</a></td><td><a href=\"" . $url_row['id'] . "\">External link</a></td></tr>";
             } else {
               print "<tr><td><a href=\"index.php?id=" . $url_row['id'] . "\">" . $url_row['page_title'] . "</a></td><td><a href=\"index.php?id=" . $url_row['id'] . "\">" . $row['link_text'] . "</a></td></tr>";

@@ -42,14 +42,17 @@ if ($mysqli->connect_errno) {
         <option value="https://www.gov.uk/browse/environment-countryside">Environment</option>
         <option value="https://www.gov.uk/browse/visas-immigration">Visas</option>
       </select>
-      | <a href="stats.php">Statistics</a>
+      | <a href="stats.php">Link Statistics</a>
+      | <a href="text.php">Text analysis</a>
+      | <a href="api.php">API information</a>
+      | <a href="" target="_blank">Intro video</a>
       | Search : <form action="search.php" method="get"><input name="search_input" id="search_input"></form>
       <hr/>
     </div>
     <div id="tables">
       <div id="outbound_link_count_area">
         <?php
-          $sql_string = "SELECT * FROM urls WHERE external <> '1' ORDER BY outbound_link_count DESC LIMIT 25";
+          $sql_string = "SELECT * FROM urls WHERE page_type <> 'external' ORDER BY outbound_link_count DESC LIMIT 25";
           $result = $mysqli->query($sql_string);
           print "<table><tr><th>Highest outgoing links</th><th>Count</th<</tr>";
           while($row = $result->fetch_assoc()) {
@@ -60,7 +63,7 @@ if ($mysqli->connect_errno) {
       </div>
       <div id="inbound_link_count_area">
         <?php
-          $sql_string = "SELECT * FROM urls WHERE external <> '1' ORDER BY inbound_link_count DESC LIMIT 25";
+          $sql_string = "SELECT * FROM urls WHERE page_type <> 'external' ORDER BY inbound_link_count DESC LIMIT 25";
           $result = $mysqli->query($sql_string);
           print "<table><tr><th>Highest incoming links</th><th>Count</th></tr>";
           while($row = $result->fetch_assoc()) {

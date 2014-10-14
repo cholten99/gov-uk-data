@@ -26,7 +26,7 @@ while($row = $result->fetch_assoc()) {
   $url_result = $mysqli->query($url_sql_string);
   $url_row = $url_result->fetch_assoc();
   $node_colour = "#97C2FC";
-  if ($url_row['external'] == 1) {
+  if ($url_row['page_type'] == "normal") {
     $node_colour = "#FFA2A2";
   }
 
